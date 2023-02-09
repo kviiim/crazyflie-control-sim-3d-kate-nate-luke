@@ -44,8 +44,7 @@ class Controller3D():
         z_error = setpoint.z_pos-state.z_pos
         z_error_dot = z_error-self.z_error
 
-        z_dot_scaling = 0
-        z_des_dot_dot = z_dot_scaling * (setpoint.z_vel - state.z_vel) # = self.trajectory.acl_z
+        z_des_dot_dot = setpoint.z_acc
         U1 =  self.params.mass * (z_des_dot_dot +
                                  self.pid_gains["kd_z"] * z_error_dot +
                                  self.pid_gains["kp_z"] * z_error +
@@ -63,7 +62,7 @@ class Controller3D():
 
         y_error = float(setpoint.y_pos)-float(state.y_pos)
         y_error_dot = y_error-self.y_error
-        y_des_dot_dot = 0  # = self.trajectory.acl_y
+        y_des_dot_dot = setpoint.y_acc
 
         y_control_dot_dot = (y_des_dot_dot +
                             self.pid_gains["kd_y"] * y_error_dot +
@@ -92,7 +91,7 @@ class Controller3D():
                 self.pid_gains["kp_theta"] * q_error)
 
 
-        r_des_dot = 0  # = self.trajectory.acl_p
+        r_des_dot = setpoint.r_dot  # = self.trajectory.acl_p
         r_error = psi_des-state.psi
         r_error_dot = r_error-self.r_error # Is this just equal to state.p
         U4 =  (r_des_dot +
