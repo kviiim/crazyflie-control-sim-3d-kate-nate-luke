@@ -12,7 +12,9 @@ class Controller3D():
         """
         Inputs:
         - cfparams (CrazyflieParams dataclass):     model parameter class for the crazyflie
-        - pid_gains (PIDGains dataclass):           pid gain class
+        - pid_gains (dict):                         pid gains
+
+        N.B. pid_gains is a dictionary structure where the keys are 'kp_x', 'kd_z', etc.
         """
         self.params = cfparams
         self.pid_gains = pid_gains
@@ -30,10 +32,12 @@ class Controller3D():
     def compute_commands(self, setpoint, state):
         """
         Inputs:
-        - setpoint (State dataclass):   the desired control setpoint
-        - state (State dataclass):      the current state of the system
+        - setpoint (TrajPoint dataclass):   the desired control setpoint
+        - state (State dataclass):          the current state of the system
         Returns:
         - U (np.array):     array of control inputs {u1-u4}
+
+        N.B. TrajPoint is a new dataclass. Please check it out from the utils.py script
         """
         print(f"State X/Y:{state.x_pos} {state.y_pos} \nSetpoint:{setpoint.x_pos} {setpoint.y_pos}")
         # your code here
